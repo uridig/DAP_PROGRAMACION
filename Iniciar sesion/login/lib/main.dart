@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 void main() {
   runApp( MainApp());
 }
@@ -43,8 +42,6 @@ class MainApp extends StatelessWidget {
                   print("Usuario mal");
 
                 }
-
-
                 },
                 child: const Text("LogIn"),
               ),
