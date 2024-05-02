@@ -8,8 +8,7 @@ void main() {
 class MainApp extends StatelessWidget {
   MainApp({super.key, Key});
 
-  final TextEditingController userController = TextEditingController();
-  final TextEditingController userController2 = TextEditingController();
+ 
 
   @override
   Widget build(BuildContext context) {
