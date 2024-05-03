@@ -30,7 +30,7 @@ class pantallaLogin extends StatelessWidget {
                 onPressed: () {
                   String ingresado = userController.text;
                   String ingresado2 = userController2.text;
-                  if (ingresado2 == "Cher") {
+                  if (ingresado=="Eitu" && ingresado2 == "Cher") {
                     print("Funciona la app");
                     context.pushNamed(HomeScreen.name,extra:ingresado);
                   }
