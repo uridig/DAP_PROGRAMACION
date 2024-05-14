@@ -24,7 +24,7 @@ const char* password = "OrtIOTnew22$2";
 #define MODOINICIAL 0
 #define CAMBIAR_UMBRAL 1
 #define PASAJE_UMBRAL 2
-#define VUELTA_MI 3
+#define VUELTA_MI 3 //Vuelta modo inicial
 #define AUMENTAR_UMBRAL 4
 
 #define BOTON1 35
@@ -66,7 +66,7 @@ void setup() {
 }
 
 void loop() {
-  if (dht.readTemperature() >= umbral && millis() - tiempo2 > 600000) {
+  if (dht.readTemperature() >= umbral && millis() - tiempo2 > 6000) {
     bot.sendMessage(CHAT_ID, "La temp es mayor");
     tiempo2 = millis();
   }
@@ -206,4 +206,4 @@ void maquinaEstado() {
 
       break;
   }
-}
+} 
