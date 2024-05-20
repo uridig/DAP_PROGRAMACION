@@ -15,7 +15,7 @@ class LoginScreen extends StatelessWidget {
   }
 }
 List<String> usuarios = ["Eitu", "Uri", "Ale"];
-List <String> contrasena = ["Dig", "Cher", "Capo"];
+List <String> contrasenas = ["Dig", "Cher", "Capo"];
 
 class pantallaLogin extends StatelessWidget {
   final TextEditingController userController = TextEditingController();
@@ -32,10 +32,16 @@ class pantallaLogin extends StatelessWidget {
                 onPressed: () {
                   String ingresado = userController.text;
                   String ingresado2 = userController2.text;
-                  if (ingresado=="Eitu" && ingresado2 == "Cher") {
-                    print("Funciona la app");
-                    context.pushNamed(HomeScreen.name,extra:ingresado);
-                  }
+                  if(usuarios.contains(ingresado)==true && contrasenas.contains(ingresado2)==true){
+                    print("TRUE");
+                    print(usuarios.indexOf(ingresado));
+                    print(contrasenas.indexOf(ingresado2));
+                    if(usuarios.indexOf(ingresado)==contrasenas.indexOf(ingresado2)){
+                      print("Funciona la app");
+                      context.pushNamed(HomeScreen.name,extra:ingresado); 
+                    }
+                     }
+
                 },
                 child: const Text("LogIn"),
               ),
