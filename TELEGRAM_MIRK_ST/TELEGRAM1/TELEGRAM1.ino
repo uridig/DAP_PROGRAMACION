@@ -88,7 +88,7 @@ void loop() {
     funcionTelegram();
     //SEGUNDO CAMBIO, HACEMOS TELEGRAM DENTRO DE UNA FUNCION
   }
-
+}
 
   void maquinaEstado() {
     Serial.println(estadoActivo);
@@ -176,7 +176,7 @@ void loop() {
         }
 
         break;
-      case MODOINICAL_PRIMERBOTON:
+      case MODOINICIAL_PRIMERBOTON:
         if (millis() - tiempo >= 5000) {
           estadoActivo = MODOINICIAL;
           tiempo = millis();
@@ -203,8 +203,9 @@ void loop() {
 
   void funcionTelegram() {
     cantMsj = bot.getUpdates(bot.last_message_received + 1);
+    int i=0;
     if (cantMsj > 0) {
-      for (i = 0, i < cantMsj, i++) {
+      for (i = 0; i < cantMsj; i++) {
         //TERCER CAMBIO, LEEMOS TODOS LOS MENSAJES NUEVOS, NO SOLO EL ULTIMO, USAMOS FOR
         String text = bot.messages[i].text;
         if (text == "/sensor") {
@@ -222,7 +223,7 @@ void loop() {
       cantMsj = bot.getUpdates(bot.last_message_received + 1);
     }
   }
-}
+
 void mostrarTemp() {
   temp = dht.readTemperature();
   //Serial.println(temp);
