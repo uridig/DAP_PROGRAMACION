@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class HomeScreen extends StatelessWidget {
   static const String name = 'home';
   String nombreEitu;
-  List<String> mostrar = ["River", "Anime", "Chocolates"];
   HomeScreen({super.key, this.nombreEitu=''});
+  List<String> mostrar = ["River", "Anime", "Chocolates", "A", "B", "C", "D", "E", "F", "G"];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
