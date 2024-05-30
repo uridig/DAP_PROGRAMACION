@@ -16,7 +16,6 @@ class LoginScreen extends StatelessWidget {
 }
 List<String> usuarios = ["Eitu", "Uri", "Ale"];
 List <String> contrasenas = ["Dig", "Cher", "Capo"];
-List<List> gustos = [["River", "Meca", "Ni idea"],["River", "Cissab", "Matematica"],["Ponerle", "10", "A sus alumnos"]];
 
 class pantallaLogin extends StatelessWidget {
   final TextEditingController userController = TextEditingController();
