@@ -1,4 +1,4 @@
-//Blas, Echi, Gaby, Uri
+//Blas Strambi, Echi Bespre, Gaby Mendelovich, Uriel Digestani
 
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
@@ -31,7 +31,7 @@ const char* password = "OrtIOTnew22$2";
 
 //CAMBIO, NUEVOS ESTADOS
 #define REDUCIR_UMBRAL 5
-#define MODOINICIAL_PRIMERBOTON 6
+#define MODOINICIAL_PRIMERBOTON 6  //Cambio de Pantalla
 #define MODOINICIAL_SEGUNDOBOTON 7
 
 #define BOTON1 35
@@ -54,7 +54,7 @@ UniversalTelegramBot bot(BOT_TOKEN, client);
 void mostrarTemp();
 ///Ejemplo de uso de 2 loop en esp32 con el encendido de 2 led . Cada led se enciende y se utiliza un delay para bloquear la tarea
 
-TaskHandle_t Task1;
+TaskHandle_t Task1;  //Definición de Tasks
 TaskHandle_t Task2;
 
 // LED pins
@@ -108,7 +108,7 @@ void Task1code(void* pvParameters) {
   for (;;) {  //si o si tiene que ir un while o un for para que nunca salga de la tarea
     if (dht.readTemperature() >= umbral) {
       if (y == 0) {
-        bot.sendMessage(CHAT_ID, "La temp es mayor");
+        bot.sendMessage(CHAT_ID, "La temp es mayor");  //Solo manda este mensaje una sola vez
         y = 1;
       }
     } else {
@@ -134,118 +134,123 @@ void maquinaEstado() {
   Serial.println(estadoActivo);
 
   switch (estadoActivo) {
-    case MODOINICIAL:
+    case MODOINICIAL:  //Muestra Temp y Umbral
       if (digitalRead(BOTON1) == 0) {
-        estadoActivo = MODOINICIAL_PRIMERBOTON;
+        estadoActivo = MODOINICIAL_PRIMERBOTON;  //Cambio a modo intermedio 1
         tiempo = millis();
       }
 
-      //CAMBIO, NUEVA FUNCION PARA MOSTRAR TEMP Y UMBRAL
+      //CAMBIO, NUEVA FUNCION PARA MOSTRAR TEMP Y UMBRAL EN PANTALLA
       mostrarTemp();
 
       break;
-    case CAMBIAR_UMBRAL:
 
-      u8g2.clearBuffer();  // clear the internal memory
-
-      u8g2.setFont(u8g2_font_ncenB08_tr);  // choose a suitable font
-
-      u8g2.drawStr(15, 50, "Umbral:");
-      sprintf(stringumbral, "%d", umbral);
-      u8g2.drawStr(70, 50, stringumbral);
-      u8g2.drawStr(90, 50, "C");
-      u8g2.sendBuffer();
-      if (digitalRead(BOTON1) == 0) {
-        estadoActivo = AUMENTAR_UMBRAL;
-      }
-      if (digitalRead(BOTON2) == 0) {
-        estadoActivo = REDUCIR_UMBRAL;
-      }
-      if (digitalRead(BOTON1) == 0 && digitalRead(BOTON2) == 0) {
-        estadoActivo = VUELTA_MI;
-        tiempo = millis();
-      }
-
-
-      break;
-    case PASAJE_UMBRAL:
-      if (digitalRead(BOTON1) == 0 || digitalRead(BOTON2) == 0) {
-        tiempo = millis();
-      }
-      if (millis() - tiempo >= 15) {
-        tiempo = millis();
-        estadoActivo = CAMBIAR_UMBRAL;
-      }
-      break;
-    case VUELTA_MI:
-      if (digitalRead(BOTON1) == 1 && digitalRead(BOTON2) == 1) {
-        estadoActivo = MODOINICIAL;
-        tiempo = millis();
-      }
-      break;
-    case AUMENTAR_UMBRAL:
-      if (digitalRead(BOTON1) == 0 || digitalRead(BOTON2) == 0) {
-        tiempo = millis();
-      }
-      if (digitalRead(BOTON1) == 0 && digitalRead(BOTON2) == 0) {
-        tiempo = millis();
-        estadoActivo = VUELTA_MI;
-      }
-      if (millis() - tiempo >= 15) {
-        umbral++;
-        estadoActivo = CAMBIAR_UMBRAL;
-        tiempo = millis();
-        umbrall = String(umbral);
-      }
-
-      break;
-    //CAMBIO, NUEVO ESTADO
-    case REDUCIR_UMBRAL:
-      if (digitalRead(BOTON1) == 0 || digitalRead(BOTON2) == 0) {
-        tiempo = millis();
-      }
-      if (digitalRead(BOTON1) == 0 && digitalRead(BOTON2) == 0) {
-        tiempo = millis();
-        estadoActivo = VUELTA_MI;
-      }
-      if (millis() - tiempo >= 15) {
-        umbral--;
-        estadoActivo = CAMBIAR_UMBRAL;
-        tiempo = millis();
-        umbrall = String(umbral);
-      }
-
-      break;
-    case MODOINICIAL_PRIMERBOTON:
+    case MODOINICIAL_PRIMERBOTON:  //Modo Intermedio 1
       if (millis() - tiempo >= 5000) {
-        estadoActivo = MODOINICIAL;
+        estadoActivo = MODOINICIAL;  //Resetea a la primera pantalla
         tiempo = millis();
       }
       if (digitalRead(BOTON2) == 0 && digitalRead(BOTON1) == 1) {
-        estadoActivo = MODOINICIAL_SEGUNDOBOTON;
+        estadoActivo = MODOINICIAL_SEGUNDOBOTON;  //Pasa a modo intermedio 2
         tiempo = millis();
       }
       mostrarTemp();
       break;
-    case MODOINICIAL_SEGUNDOBOTON:
+
+    case MODOINICIAL_SEGUNDOBOTON:  //Modo intermedio 2
       if (millis() - tiempo >= 5000) {
-        estadoActivo = MODOINICIAL;
+        estadoActivo = MODOINICIAL;  //Resetea a pantalla inicial
         tiempo = millis();
       }
       if (digitalRead(BOTON1) == 0 && digitalRead(BOTON2) == 1) {
-        estadoActivo = PASAJE_UMBRAL;
+        estadoActivo = PASAJE_UMBRAL;  //Pasa a intermedio 3
         tiempo = millis();
       }
       mostrarTemp();
       break;
   }
+
+  case PASAJE_UMBRAL:  //Espera a que ambos botones se liberen
+    if (digitalRead(BOTON1) == 0 || digitalRead(BOTON2) == 0) {
+      tiempo = millis();
+    }
+    if (millis() - tiempo >= 15) {
+      tiempo = millis();
+      estadoActivo = CAMBIAR_UMBRAL;
+    }
+    break;
+
+  case CAMBIAR_UMBRAL:  //2da pantalla, solo se muestra Umbral (Se puede cambiar)
+
+    u8g2.clearBuffer();  // clear the internal memory
+
+    u8g2.setFont(u8g2_font_ncenB08_tr);  // choose a suitable font
+
+    u8g2.drawStr(15, 50, "Umbral:");
+    sprintf(stringumbral, "%d", umbral);
+    u8g2.drawStr(70, 50, stringumbral);
+    u8g2.drawStr(90, 50, "C");
+    u8g2.sendBuffer();
+    if (digitalRead(BOTON1) == 0) {
+      estadoActivo = AUMENTAR_UMBRAL;  //Umbral++
+    }
+    if (digitalRead(BOTON2) == 0) {
+      estadoActivo = REDUCIR_UMBRAL;  //Umbral--
+    }
+    if (digitalRead(BOTON1) == 0 && digitalRead(BOTON2) == 0) {
+      estadoActivo = VUELTA_MI;  //Intermedio para la vuelta, se aprietan ambos botones a la vez
+      tiempo = millis();
+    }
+    break;
+
+  case VUELTA_MI:  //Intermedio vuelta, espera a que ambos botones se liberen
+    if (digitalRead(BOTON1) == 1 && digitalRead(BOTON2) == 1) {
+      estadoActivo = MODOINICIAL;
+      tiempo = millis();
+    }
+    break;
+
+  case AUMENTAR_UMBRAL:
+    if (digitalRead(BOTON1) == 0 || digitalRead(BOTON2) == 0) {
+      tiempo = millis();
+    }
+    if (digitalRead(BOTON1) == 0 && digitalRead(BOTON2) == 0) {
+      tiempo = millis();
+      estadoActivo = VUELTA_MI;  //Corta y vuelve a pantalla 1
+    }
+    if (millis() - tiempo >= 15) {
+      umbral++;
+      estadoActivo = CAMBIAR_UMBRAL;
+      tiempo = millis();
+      umbrall = String(umbral);
+    }
+
+    break;
+
+  //CAMBIO, NUEVO ESTADO
+  case REDUCIR_UMBRAL:
+    if (digitalRead(BOTON1) == 0 || digitalRead(BOTON2) == 0) {
+      tiempo = millis();
+    }
+    if (digitalRead(BOTON1) == 0 && digitalRead(BOTON2) == 0) {
+      tiempo = millis();
+      estadoActivo = VUELTA_MI;  //Corta y vuelve a pantalla 1
+    }
+    if (millis() - tiempo >= 15) { 
+      umbral--;
+      estadoActivo = CAMBIAR_UMBRAL;
+      tiempo = millis();
+      umbrall = String(umbral);
+    }
+
+    break;
 }
 void funcionTelegram() {
   cantMsj = bot.getUpdates(bot.last_message_received + 1);
-  int i=0;
-  if (cantMsj > 0) {
+  int i = 0;
+  while (cantMsj > 0) {
     for (i = 0; i < cantMsj; i++) {
-      //TERCER CAMBIO, LEEMOS TODOS LOS MENSAJES NUEVOS, NO SOLO EL ULTIMO, USAMOS FOR
+      //TERCER CAMBIO, LEEMOS TODOS LOS MENSAJES NUEVOS EMPEZANDO DEL PRIMER MENSAJE ENVIADO, NO SOLO EL ULTIMO, USAMOS FOR
       String text = bot.messages[i].text;
       if (text == "/sensor") {
         String temperaturaString = String(dht.readTemperature());  // Interroga por datos del sensor
