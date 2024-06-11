@@ -1,3 +1,5 @@
+//Charnis, Digestani, Lopez, Strambi
+//Grupo 7
 #include <Preferences.h>
 #include <U8g2lib.h>
 #include <DHT.h>
@@ -78,6 +80,7 @@ void maquinaEstado() {
       if (digitalRead(BOTON1) == 1) {
         tiempo = millis();
       }
+      
       if (millis() - tiempo > 5000) {
         estadoActivo = ANTIRREBOTE12;
         tiempo = millis();
@@ -105,7 +108,7 @@ void maquinaEstado() {
       u8g2.sendBuffer();  // transfer internal memory to the display
       break;
     case ANTIRREBOTE12:
-      if (digitalRead(BOTON1) == 0) {
+      if (digitalRead(BOTON1) == 0 || digitalRead(BOTON2)==0) {
         tiempo = millis();
       }
       if (millis() - tiempo > 15) {
@@ -115,7 +118,7 @@ void maquinaEstado() {
       }
       break;
     case ANTIRREBOTE21:
-      if (digitalRead(BOTON2) == 0) {
+      if (digitalRead(BOTON2) == 0 || digitalRead(BOTON1)==0) {
         tiempo = millis();
       }
       if (millis() - tiempo > 15) {
