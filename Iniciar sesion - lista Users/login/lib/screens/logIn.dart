@@ -14,8 +14,9 @@ class LoginScreen extends StatelessWidget {
     );
   }
 }
+
 List<String> usuarios = ["Eitu", "Uri", "Ale"];
-List <String> contrasenas = ["Dig", "Cher", "Capo"];
+List<String> contrasenas = ["Dig", "Cher", "Capo"];
 
 class pantallaLogin extends StatelessWidget {
   final TextEditingController userController = TextEditingController();
@@ -32,16 +33,31 @@ class pantallaLogin extends StatelessWidget {
                 onPressed: () {
                   String ingresado = userController.text;
                   String ingresado2 = userController2.text;
-                  if(usuarios.contains(ingresado)==true && contrasenas.contains(ingresado2)==true){
+                  if (usuarios.contains(ingresado) == true &&
+                      contrasenas.contains(ingresado2) == true) {
                     print("TRUE");
                     print(usuarios.indexOf(ingresado));
                     print(contrasenas.indexOf(ingresado2));
-                    if(usuarios.indexOf(ingresado)==contrasenas.indexOf(ingresado2)){
+                    if (usuarios.indexOf(ingresado) ==
+                        contrasenas.indexOf(ingresado2)) {
                       print("Funciona la app");
-                      context.pushNamed(HomeScreen.name,extra:ingresado); 
+                      context.pushNamed(HomeScreen.name, extra: ingresado);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('No'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
                     }
-                     }
-
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('No'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                  }
                 },
                 child: const Text("LogIn"),
               ),

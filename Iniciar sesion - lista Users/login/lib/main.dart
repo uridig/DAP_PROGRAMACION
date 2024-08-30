@@ -8,8 +8,6 @@ void main() {
 class MainApp extends StatelessWidget {
   MainApp({super.key, Key});
 
- 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(

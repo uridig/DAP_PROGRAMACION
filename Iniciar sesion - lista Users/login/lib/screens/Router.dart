@@ -1,9 +1,9 @@
 import 'package:go_router/go_router.dart';
 import './Home.dart';
 import './logIn.dart';
+import './Detail.dart';
 
-final RouterScreen = GoRouter(
-  routes: [
+final RouterScreen = GoRouter(routes: [
   GoRoute(
     name: LoginScreen.name,
     path: '/',
@@ -14,5 +14,9 @@ final RouterScreen = GoRouter(
     path: '/home',
     builder: (context, state) => HomeScreen(nombreEitu: state.extra as String),
   ),
-]
-);
+  GoRoute(
+    name: DetailScreen.name,
+    path: '/',
+    builder: (context, state) => DetailScreen(food: state.extra as Food),
+  ),
+]);
