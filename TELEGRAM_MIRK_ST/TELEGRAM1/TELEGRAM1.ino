@@ -18,8 +18,8 @@ U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/U8X8_PIN_NONE);
 const char* ssid = "Aaron";
 const char* password = "Yabra.26";
 
-#define BOT_TOKEN "7114974258:AAGbNV5exIYk7kbjlWK_UHg_MRgNB0kbq0Y"
-#define CHAT_ID "5085758476"
+#define BOT_TOKEN ""
+#define CHAT_ID ""
 
 //estados
 #define MODOINICIAL 0
